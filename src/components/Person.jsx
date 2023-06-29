@@ -28,7 +28,13 @@ export const Person = ({ id, personId }) => {
       >
         +
       </button>
-      {sideMenu && <InitForm personId={personId} setSideMenu={setSideMenu} />}
+      {sideMenu && (
+        <InitForm
+          personId={personId}
+          setSideMenu={setSideMenu}
+          famid={people[personId].famid}
+        />
+      )}
     </div>
   );
 };

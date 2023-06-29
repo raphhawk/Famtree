@@ -4,8 +4,7 @@ import { Nodules } from "./components/Nodules";
 import { famtree } from "./data/models";
 import { Person } from "./components/Person";
 import { InitForm } from "./components/Forms";
-import { people } from "./data/models";
-
+import { people, families } from "./data/models";
 /*{
   famtree.map((f) => (
     <ul className="flex flex-col items-center">
@@ -40,7 +39,7 @@ const App = () => {
         />
       )}
       {Object.values(peoples).map((p) => {
-        console.log(peoples);
+        console.log(families);
         return <Person id={p.personId} personId={p.personId} />;
       })}
     </div>

@@ -1,7 +1,12 @@
 import { useState } from "react";
-import { numerals, people } from "../data/models";
+import { numerals, people, families } from "../data/models";
+import {
+  getExactRelations,
+  createFamily,
+  setFamily,
+} from "../controller/familyfy";
 
-export const InitForm = ({ setSideMenu, personId }) => {
+export const InitForm = ({ setSideMenu, personId, famid }) => {
   const [name, setName] = useState("");
   const [dob, setDob] = useState(new Date());
   const [gender, setGender] = useState("");
@@ -25,6 +30,33 @@ export const InitForm = ({ setSideMenu, personId }) => {
   };
   const handleRelationChange = (e) => {
     setRelation(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    setSideMenu(false);
+    if (name && dob && gender && email) {
+      numerals.personId += 1;
+      numerals.famid += 1;
+      people[numerals.personId] = {
+        personId: numerals.personId,
+        name,
+        dob,
+        gender,
+        relation,
+        email,
+        relationsLeft: ["parent", "child", "sibling", "spouse"],
+        famid: numerals.famid,
+      };
+      if (famid) {
+        const [exactRealtion, yourRelation] = getExactRelations(
+          relation,
+          gender
+        );
+        families[famid] = createFamily(famid, exactRealtion, yourRelation);
+      } else {
+        setFamily();
+      }
+    }
   };
 
   return (
@@ -94,7 +126,7 @@ export const InitForm = ({ setSideMenu, personId }) => {
           />
           <datalist id="relations">
             {relationsList.map((r) => (
-              <option className="text-5l" value={r} />
+              <option className="text-5l" value={r} key={r} />
             ))}
           </datalist>
         </div>
@@ -114,21 +146,7 @@ export const InitForm = ({ setSideMenu, personId }) => {
         <button
           type="button"
           className="bg-slate-950 w-fit px-4 py-1 rounded-md hover:bg-slate-900"
-          onClick={() => {
-            setSideMenu(false);
-            if (name && dob && gender && email) {
-              numerals.personId += 1;
-              people[numerals.personId] = {
-                personId: numerals.personId,
-                name: name,
-                dob: dob,
-                gender: gender,
-                relation: relation,
-                email: email,
-                relationsLeft: ["parent", "child", "sibling", "spouse"],
-              };
-            }
-          }}
+          onClick={() => handleSubmit()}
         >
           Submit
         </button>
