@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { nanoid } from "nanoid";
+
 import { numerals, people, families } from "../data/models";
 import {
   getExactRelations,
@@ -35,26 +37,33 @@ export const InitForm = ({ setSideMenu, personId, famid }) => {
   const handleSubmit = () => {
     setSideMenu(false);
     if (name && dob && gender && email) {
-      numerals.personId += 1;
-      numerals.famid += 1;
-      people[numerals.personId] = {
-        personId: numerals.personId,
+      // numerals.personId += 1;
+      // numerals.famid += 1;
+      const [personId, famlyId] = [nanoid(), nanoid()];
+      people[personId] = {
+        personId,
         name,
         dob,
         gender,
         relation,
         email,
         relationsLeft: ["parent", "child", "sibling", "spouse"],
-        famid: numerals.famid,
+        famid: famlyId,
       };
       if (famid) {
         const [exactRealtion, yourRelation] = getExactRelations(
           relation,
           gender
         );
-        families[famid] = createFamily(famid, exactRealtion, yourRelation);
+        console.log(exactRealtion, yourRelation);
+        families[famid] = createFamily(
+          personId,
+          famid,
+          exactRealtion,
+          yourRelation
+        );
       } else {
-        setFamily();
+        setFamily(famlyId, personId);
       }
     }
   };

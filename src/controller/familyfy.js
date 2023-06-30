@@ -1,4 +1,4 @@
-import { numerals, families } from "../data/models";
+import { numerals, families, people } from "../data/models";
 
 export const getExactRelations = (relation, gender) => {
   if (relation === "parent" && gender === "Male") {
@@ -9,31 +9,35 @@ export const getExactRelations = (relation, gender) => {
     return ["husband", "wife"];
   } else if (relation === "spouse" && gender === "Female") {
     return ["wife", "husband"];
+  } else {
+    return ["child", "parent"];
   }
-  return [];
 };
 
-export const createFamily = (famid, exactRealtion, yourRelation) => {
+export const createFamily = (personId, famid, exactRealtion, yourRelation) => {
   const family = families[famid];
-  if (family.hasOwnProperty("myself")) {
-    if (yourRelation === "child") {
-      // add parent fam
-      if (family.hasOwnProperty("children")) {
+  try {
+    if (family.myself) {
+      if (yourRelation === "child") {
+        // add parent fam
         family.children.push(family.myself);
-      } else {
-        family[children] = [family.myself];
       }
-    } else if (!family[yourRelation]) {
-      family[yourRelation] = family.myself;
+      !family[yourRelation] && (family[yourRelation] = family.myself);
+      delete family.myself;
     }
-    delete family.myself;
+  } catch (err) {}
+  exactRealtion === "child"
+    ? family.children.push(personId)
+    : (family[exactRealtion] = personId);
+  if (family.parent) {
+    people[family.parent].gender === "Male"
+      ? (family.husband = family.parent)
+      : (family.wife = family.parent);
+    delete family.parent;
   }
-  family[exactRealtion] = numerals.personId;
   return family;
 };
 
-export const setFamily = () => {
-  families[numerals.famid] = {};
-  families[numerals.famid].famid = numerals.famid;
-  families[numerals.famid].myself = numerals.personId;
+export const setFamily = (famlyId, personId) => {
+  families[famlyId] = { famid: famlyId, myself: personId, children: [] };
 };
