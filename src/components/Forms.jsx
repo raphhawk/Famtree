@@ -37,8 +37,6 @@ export const InitForm = ({ setSideMenu, personId, famid }) => {
   const handleSubmit = () => {
     setSideMenu(false);
     if (name && dob && gender && email) {
-      // numerals.personId += 1;
-      // numerals.famid += 1;
       const [personId, famlyId] = [nanoid(), nanoid()];
       people[personId] = {
         personId,
@@ -51,11 +49,11 @@ export const InitForm = ({ setSideMenu, personId, famid }) => {
         famid: famlyId,
       };
       if (famid) {
-        const [exactRealtion, yourRelation] = getExactRelations(
+        const [currentRelation, previousRelation] = getExactRelations(
           relation,
           gender
         );
-        console.log(exactRealtion, yourRelation);
+        console.log(currentRelation, previousRelation);
         families[famid] = createFamily(
           personId,
           famid,

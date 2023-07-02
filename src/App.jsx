@@ -28,7 +28,7 @@ const App = () => {
     <div className="bg-zinc-950 h-screen w-screen text-center">
       <button
         onClick={() => setSideMenu(!sideMenu)}
-        className="w-10 h-10 my-20 bg-gray-400 rounded-full text-center text-2xl text-zinc-300"
+        className="w-10 h-10 my-20 bg-teal-400 rounded-full text-center text-2xl hover:ring-4"
       >
         +
       </button>
